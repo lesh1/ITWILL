@@ -1,0 +1,409 @@
+Test64.java (Test59.java 파일 복사)
+
+// 지난 Test59.java 파일에 작성한 과일 장수 이야기 생성자 이용하는 방법으로 업그레이드 시키기
+
+
+/*
+	FriutSeller(과일장수) 클래스 내부 수정
+	1. 사과 한개당 가격을 저장할 APPLE_PRICE 변수에 final을 붙이기
+		
+		- final int APPLE_PRICE; 
+
+	2. initMembers메소드 삭제
+		
+		- void initMembers(int mMoney,int nApple, int price)｛…｝ 부분 삭제
+			
+			- 삭제 이유 : initMembers를 계속 수정할 수 있기 때문!
+
+	3. 판매수익, 사과 보유 갯수, 사과 한개당 가격을 변수에 저장시킬 생성자 추가 (생성자 추가 위치 : ※변수와 메소드 사이※) [생성자는 class 이름과 동일해야함]
+		
+		- public FruitSeller(int apple_price, int numApple, int myMoneys) {  // ㆍ변수와 매개변수의 이름이 같을 경우 배개변수인지 변수인지 구분이 불가ㆍ
+				APPLE_PRICE = apple_price; // 사과 한개당 가격을 상수에 저장
+				numOfApple = numApple; // 사과 보유 개수 변수에 저장 
+				myMoney = myMoneys; // 과일장수가 현재 소유하고 있는 돈을 변수에 저장 
+			}
+
+			- new 객체 생성 하는 동시에 호츨되는 생성자 만들기
+			
+			- 생성자의 역할 : 판매수익, 사과보유개수, 사과 한개당 가격을 각 변수에 저장
+			
+			- (생성자 만들기: Source메뉴 -> Generate Constructor using Fields.. ->
+				select fields to initialize(전부 선택)-> (생성자 추가 지역)Insertion point -> After 'MyMoney' -> Generate)
+
+			- APPLE_PRICE의 경우 final 로 인해 딱 한번만 수정이 가능하기 때문에 값이 한번 설정이 된 이후엔 값을 변경할 수 없다.
+
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+	FruitBuyer(과일구매자) 클래스 내부 수정
+	1. 현재 소유하고 있는 현금 0원, 현재 소유하고 있는 사과의 개수 0개로 저장
+		
+		int myMoney;
+		int numOfApple;
+
+	2. 객체 생성시.. 구매자의 현재 소유하고 있는 현금, 사과 보유 갯수를 저장할 생성자 추가
+		 [★생성자를 추가할 곳에 커서를 두면 편함★(단축키: Alt -> s -> a -> …) || (단축키 : Alt+Shift+s -> o ->…)]
+
+		public FruitBuyer(int myMoney, int numOfApple) { //this 란 현재 위치하고 있는 클래스의 변수를 의미 new FruitBuyer(…);
+		this.myMoney = myMoney;
+		this.numOfApple = numOfApple;
+		}
+			- new FruitBuyer(10000); 객체 생성시... 
+			- 또는
+			- new FruitBuyer(20000); 객체 생성시...
+			- 현재 소유금액을 생성자의 매개변수로 전달해 위 int myMoney변수에 저장할 생성자 추가 ( )
+*/
+
+
+/*
+	개발자가 생성자를 만들어 놓지 않으면 JVM은 기본생성자를 자동으로 만들어 놓음
+	단, 우리 눈으로는 보이지 않음
+	
+	ex) public FriutSeller(){ }
+
+	개발자가 생성자 한개 이상을 만들어 놓으면 	JBM은 기본생성자를 만들어 놓지 않기 때문에 	직접 개발자가 기본생성자를 만들어 놓아야 함
+	ex) 	
+	public FruitSeller()
+	{
+		this.APPLE_PRICE=0;
+	}
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+	판매자 --> new Seller(/*개당가격,보유 사과 갯수,판매수익*/)
+
+	구매자 --> new Buyer(/*초기 자금, 보유 사과 갯수*/)
+
+	과일 판매자(과일장수)1 객체 생성
+	 new 객체 생성시 판매수익 (0), 보유하고 있는 사과 수 (30), 개당 가격 (1500)을 객체 변수에 초기화할 생성자 호출	
+
+
+	과일 판매자(과일장수)2 객체 생성
+	 new 객체 생성시 판매수익 (0), 보유하고 있는 사과 수(20), 개당 가격 (1000)을  객체변수에 저장시킬 생성자 호출
+
+
+	과일 구매자 객체 생성과 동시에 객체 변수의 값을 초기화 시킬 생성자 호출
+	 생성자 호출시 과일구매자의 현재 소유하고 있는 현금을 저장하기 위해 (10000)을 전달
+
+
+
+	public static void main(String[] args) {
+	
+		FruitSeller seller1= new FruitSeller(0,30,1500);
+		FruitSeller seller2= new FruitSeller(0,20,1000);	
+
+		FruitBuyer buyer1= new FruitBuyer(10000,0);
+
+		// 과일 구매자 객체는 과일장수1에게 4500원치 사과 구매하기
+
+		buyer1.buyApple(seller1,4500); 		// buyer1.buyApple(/*판매자 이름,지불할 돈*/);
+
+		// 과일 구매자 객체는 과일장수2에게 2000원치 사과 구매하기
+
+		buyer1.buyApple(seller2,2000);
+
+		System.out.println("-----과일 판매자1의 현재 상황----");
+		seller1.showSaleResult();
+
+		System.out.println("-----과일 판매자2의 현재 상황----");
+		seller2.showSaleResult();
+
+		System.out.println("-----과일 구매자의 현재 상황----");
+		buyer1.showBuyResult();
+
+		/*
+			출력결과
+
+			-----과일 판매자1의 현재 상황----
+			남은 사과 개수: 27 || 판매 수익: 4500
+			-----과일 판매자2의 현재 상황----
+			남은 사과 개수: 18 || 판매 수익: 2000
+			-----과일 구매자의 현재 상황----
+			가진 사과 개수: 5 || 남은 돈: 3500
+		*/
+		}
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Song.java
+
+모두 데이터은닉변수로 만들기 ==> private
+
+-노래의 제목을 나타내는 title
+-가수를 나타내는 artist
+-노래가 속한 앨범 제목을 나타내는 album
+-노래의 작곡가를 나타내는 composer,작곡가는 여려명 있을수있다.<-배열참조변수
+-노래가 발표된 연도를 나타내는 year
+-노래가 속한 앨범에서의 트랙번호를 나타내는 track
+
+생성자는 기본생성자와 모든필드를 초기화하는 생성자를 작성
+
+노래의 정보를 화면에 출력하는 show()메소드도 작성 --> SongManager.java
+
+
+
+
+public class Song {
+
+	// 노래의 제목을 저장하는 title변수 선언
+	private String title;
+
+	// 가수이름을 저장할 artist변수 선언
+	private String artist;
+
+	// 노래가 속한 앨범 제목을 저장할 album변수 선언
+	private String album;
+
+	// 노래의 작곡가를 나타내는 composer변수 선언, 작곡가는 여러명 있을수 있음
+	private String[] composer;
+
+	// 노래가 발표된 연도를 저장할 year변수 선언
+	private int year;
+
+	// 노래가 속한 앨범에서의 트랙번호를 나타내는 변수 선언
+	private int track;
+
+	// 생성자 작성 ( 기본생성자, 모든 변수 초기화)
+
+	// 기본생성자
+	Song()
+	{
+		Title=null;
+		Artist=null;
+		Album=null;
+		Composer=null;
+		Year=0;
+		Track=0;
+	}
+
+	// 모든필드를 초기화하는 생성자를 작성 (단축키 : alt --> s --> a || Alt+Shift+s --> o)
+
+	public Song(String title,
+				String artist,
+				String album,
+				String[] composer,
+				int year,
+				int track){
+			this.title=title;
+			this.artist=artist;
+			this.album=album;
+			this.composer=composer;
+			this.year=year;
+			this.track=track;
+		}
+
+	//노래의 정보를 화면에 축력하는 기능의 show()메소드 정의
+
+	public void show()
+	{
+		System.out.println("노래제목: "+title);
+		System.out.println("가수: "+artist);
+		System.out.println("앨범: "+album);
+		System.out.print("작곡가: ");
+		//String배열에 저장된 작곡가명 갯수 만큼 반복
+		for(int i=0;i<composer.length;i++)
+		{ //for 시작
+
+			System.out.print(composer[i]);
+			//작곡가 명이 없으면 끝내고 다음줄로..
+			if(i+1==composer.length){
+				System.out.println();
+			}
+			else{
+				System.out.print(",");
+			}
+		} // for 끝
+		System.out.println("년도: "+year);
+		System.out.println("트랙번호: "+track);
+	} // show()메소드 끝
+} // Song클래스 끝
+
+----------------------------------------------------------------------------------------
+
+SongManager.java
+
+public class SongManager{
+	public staitc void main(String[] args){
+		
+		//ABBA의 "Dansing Queen" 노래를 Song객체로 생성하고
+		Song s = Song s = new Song("Dansing Queen", "ABBA", "Arrival",new String[] {"Benny Andersson","Bjorn Ulvaeus"}, 1977, 2);
+
+		//show()를 이용하여 이노래의 정보를 출력하는 프로그램을 작성하라.
+		s.show();
+	}
+}
+
+----------------------------------------------------------------------------------------
+
+Rectangle.java
+class Rectangle{
+	// int타입의 x1, y1, x2, y2변수(필드): 사각형을 구성하는 두점의 좌표
+		private int x1,y1,x2,y2;
+
+		//생성자 2개
+
+		//기본생성자
+		public Rectangle(){
+			x1=y1=x2=y2=0; // 전부 0으로 초기화
+		}
+
+	// 단축키 (Alt->s -> a || Alt+Shift+s -> o)
+		public Rectangle(int x1,int y1, int x2, int y2){
+			this.x1=x1;
+			this.y1=y1;
+			this.x2=x2;
+			this.y2=y2;
+		}
+
+
+	// 메소드 -void set(int x1, int y1, int x2, int y2) : x1,y1, x2, y2 좌표 설정
+
+		void set(int x1, int y1, int x2, int y2)
+		{
+			this.x1=x1;
+			this.y1=y1;
+			this.x2=x2;
+			this.y2=y2;
+		}
+
+	// int square() : 사각형 넓이 리턴
+		
+		public int square(){
+			//면적계산
+			int size = (x1-x2)*(y1-y2); // 면적 계산
+			if(size<0){
+				size=-size;
+			}
+			return size;
+		}
+
+	// void show() : 좌표와 넓이 등 직사각형 정보의 화면 출력
+
+	public void show(){
+		System.out.print("사각형의 좌표는 (");
+		System.out.print(x1+","+y1+"),(");
+		System.out.print(x2+","+y2=")입니다.");
+	}
+
+	// boolean equals(Retangle r) : 인자로 전달된 객체 r 과 현 객체가 동일한 직사각형이면 true 리턴
+
+	boolean equals(Retangle x){	// equals 메소드 시작
+
+		int width1=(x.x1>x.x2?(x.x1-x.x2):(x.x2-x.x1));  //x매개변수로 전달 받는 x객체의 가로길이
+		int width2=(x1>x2?(x1-x2):(x2-x1)); 			// this 사각형 r객체의 가로길이
+		
+
+		int height1=(x.y1>x.y2?(x.y1-x.y2):(x.y2-x.y1)); //x매개변수로 전달 받는 객체의 세로길이
+		int height2=(y1>y2?(y1-y2):(y2-y1));				// this 사각형 r객체의 세로길이
+
+		
+	//	 width1 가로길이와 width2 가로길이가 같고
+	//	 height1 세로길이와 height2 세로길이가 모두 같을 때
+		
+		if(width1==width&&height1==height2)
+		{
+			return true;
+		}
+
+	//	 다르면
+		return false;
+
+	} // equals 메소드 끝
+
+} // Rectangle 클래스 끝
+
+
+----------------------------------------------------------------------------------------
+
+public class RectManager {
+	public static void main(String args[]) {
+		
+//사각형r
+
+		Rectangle r = new Rectangle();
+		System.out.println("사각형r");
+		r.show();
+		System.out.println();
+	
+		/*
+			출력 결과
+
+			사각형r
+			좌표: (0,0), (0,0)
+			넓이:0
+
+		*/
+
+//사각형s
+
+		System.out.println("사각형s");
+	
+		Rectangle s = new Rectangle(1, 1, 2, 3);
+		s.show();
+
+		/*
+			출력 결과
+
+			사각형s
+			좌표: (1,1), (2,3)
+			넓이:2
+		*/
+
+//사각형s의 넓이	
+
+		System.out.println("사각형s의 넓이 : " + s.square());
+		System.out.println();
+
+//사각형r의 좌표 수정
+
+		System.out.println("사각형r의 좌표를 (-2,2), (-1,4)로 수정");
+		System.out.println();
+		
+		/*
+			출력 결과
+
+			사각형s의 넓이 : 2
+
+			사각형r의 좌표를 (-2,2), (-1,4)로 수정
+
+		*/
+
+//사각형r 좌표 설정 및 출력
+
+		System.out.println("사각형r");
+	
+		r.set(-2, 2, -1, 4);
+	
+		r.show();
+
+		/*
+			출력 결과
+
+			사각형r
+			좌표: (-2,2), (-1,4)
+			넓이:2
+		*/
+
+//사각형r 객체 내부의 equals메소드 호출시 매개변수로 사각형s객체 자체를 전달
+	
+		System.out.println("사각형r의 넓이 : " + r.square());
+
+		if (r.equals(s)) {
+			System.out.println("두 사각형의 넓이는 같습니다.");
+		}
+
+		/*
+			출력 결과
+
+			사각형r의 넓이 : 2
+			두 사각형의 넓이는 같습니다.
+		*/
+
+	}
+}

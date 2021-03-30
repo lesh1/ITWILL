@@ -1,0 +1,414 @@
+//Test65.java
+
+/*
+	this 와 this() 
+
+	this참조변수
+	 	- this참조변수는 인스턴스(객체)가 바로 자기 자신의 멤버를 참조하는데 사용하는 변수
+	 	 이러한 this 참조변수는 해당 인스턴스(객체)의 주소를 가지고 있음
+
+	 	;
+*/
+
+	// 변수를 선언할때 변수명 앞에 private 단어를 붙이면 Car외부의 클래스에서 Car클래스내부의 modelName변수에 접근할 수 없다.
+
+class Car{
+	//변수
+	private String modelName; 
+	private int modelYear;
+	private String color;
+	private int maxSpeed;
+	private int currentSpeed;
+
+/************************************************************************************************************************
+*											참 고																		*
+* 			car.modelname; // 해당 클래스에서 private로 설정되어 있기때문에 외부 클래스에서 호출 불가능						*
+* 			car.color; //해당 클래스에서 pubulic로 설정되어 있기때문에 외부 클래스에서 호출이 가능함							*
+*																														*
+*************************************************************************************************************************/
+
+	//생성자
+//		-역할 : new Car()객체 생성시 Car()생성자를 호출해 변수의 값들을 저장하는 역할	
+	Car(String modelName,int modelYear,String color, int max){	//첫번째 생성자
+		this.modelName=modelName;
+		this.modelYear=modelYear;
+		this.color=color;
+		
+		// ==> 매개변수 명과 일반 변수명이 동일할 경우 일반 변수명 앞에 this 라는 참조변수명을 붙여 객체 자기자신과 매개변수를 구분시켜줘야함
+		
+		maxSpeed=max;
+		this.currentSpeed=0;
+
+		// ==> 매개변수 max 이름과 위의 객체변수 maxSpeed 이름이 다를 때는
+		// this.maxSpeed = max; 구문에서
+		// this.은 생략 가능
+
+/************************************************************************************************************************
+*											참 고																		*
+*																														*
+*																														*
+*			modelName=modelName; : 구분하기 위해	this를 사용	(객체변수와 매개변수 구분)									*
+* 																														*
+*			modelName(클래스에 들어가 있는 객체의 변수)=modelName(매개변수); 								 				*
+* 																														*	
+*								this.modelName=modelName;																*
+*																														*
+*																														*
+*************************************************************************************************************************/
+
+/*
+	위 예제처럼 생성자의 매개변수 이름과 인스턴스변수 이름이 같을 경우에는
+	인스턴스변수명 앞에 this참조변수(키워드)를 붙여 구분해야함
+
+	이렇게 자바에서는 this참조변수를 사용하여 인스턴스변수에 접근할 수 있음
+	이러한 this참조변수를 사용할 수 있는 영역은 인스턴스 메소드 뿐이고, 클래스 메소드에서는 사용할 수 없음
+
+	모든 인스턴스 메소드에는 this참조변수가 숨겨진 지역변수로 존재하고 있음
+*/
+	}
+}
+
+
+/*
+	this()메소드는 생성자 내부에서만 호출해서 사용할 수 있으며, 같은 클래스의 다른 생성자를 호출할때 사용
+
+	- this()메소드에 인수를 전달하면, 생성자 중에서 생성자의 이름과 생성자의 매개변수 갯수가 일치하는 다른 생성자를 찾아서 호출
+*/
+
+class Car1{
+	private String modelName; 
+	private int modelYear;
+	private String color;
+	private int maxSpeed;
+	private int currentSpeed;
+
+	Car1(){	//두번째 생성자
+
+		//다른 생성자를 호출하는 this()메소드 작성
+		this("소나타",2012,"검정색",100);
+	}
+
+	Car1(String modelName,int modelYear,String color, int max){
+		this.modelName=modelName;
+		this.modelYear=modelYear;
+		this.color=color;
+		maxSpeed=max;
+		this.currentSpeed=0;
+		}
+
+	public String getModel(){//new Car1()에 대한 정보를 하나의 문자열로 만들어 반환
+		return this.modelYear+"년식 "+this.modelName+" "+this.color;
+	}
+}
+
+
+public class Test65 {
+	public static void main(String[] args) {
+		
+//		new Car("투싼하이브리드",2021,"팬텀블랙",600);
+		new Car1().getModel();
+		System.out.println(new Car1().getModel());
+		/*
+				출력결과
+
+			2012년식 소나타 검정색
+		*/
+
+/*
+	위 예제에서 매개변수를 가지는 첫번째 생성자는 this 참조변수를 사용하여 인스턴스변수(객체변수)에 접근하고 있음
+	
+	또한, 매개변수를 가지지 않는 두번째 생성자는 내부부에서 this()메소드를 이용하여 첫번째 생성자를 호출
+
+	이렇게 내부적으로 다른생성자를 호출하여 인스턴스 변수를 초기화할 수 있음.
+
+	단, 한 생성자는 다른 생성자를 호출할 때에는 해당 생성자의 첫줄에서만 초기화할 수 있음
+*/
+	}
+}
+	
+------------------------------------------------------------------------------------------------------
+
+// Test66.java
+
+
+/*
+	this() 메소드 --> 같은 클래스의 다른 생성자 호출시 사용
+				 --> 생성된 객체 자기자신의생성자를 가리키는 참조변수의 역할
+
+	주제 : 같은 클래스내부의 다른형태의 생성자를 호출하는 this()메소드 알아보기
+*/
+
+class MyDate{
+	private int year;
+	private int month;
+	private int day;
+
+//	객체 생성시 객체변수 year, month, day의 값을 저장할 생성자
+	public MyDate(int year, int month, int day){
+		this.year= year;
+		this.month = month;
+		this.day = day;
+	}
+
+// 객체 생성시 객체변수 year,month 의 값을 저장할 생성자
+	public MyDate(int year,int month){
+
+		//다른 생성자 호출
+		this(year,month,1);
+	}
+
+// 객체 생성시 객체변수 year 의 값을 저장할 생성자
+	public MyDate(int year){
+			//다른생성자 호출
+			this(year,1,1);
+		}
+	
+	// 기본생성자 
+								// 생성자 역할 : 객체변수의 값을 저장
+		public MyDate()
+		{
+			this(2016,1,1);
+		}
+
+// 위 객체 변수(인스턴스 변수)의 값들을 출력하는 기능의 메소드
+public void print(){
+	System.out.println(this.year+"/"+month+"/"+this.day);
+}
+}
+
+public class Test66{
+	public static void main(String[] args){
+		// 1. 객체 생성 동시에 1988, 8, 30을 생성자 호출시 매개변수로 전달해
+		// 생성한 객체 내부의 객체변수들에 각각 저장
+
+		MyDate d = new MyDate(1988,8,30);
+		d.print();
+
+		/*
+				출력 결과
+
+				1988/8/30
+		*/
+
+		// 2. 객체 생성 동시에 1988,8을 생성자 호출시 매개변수로 전달해 생성한 객체 내부의 객체변수들에 각각 저장
+		MyDate d2 = new MyDate(1988,8);
+		d2.print();
+
+		/*
+				출력 결과
+
+				1988/8/1
+		*/
+
+		// 3. 객체 생성 동시에 1988을 생성자 호출시 매개변수로 전달해 생성한 객체 내부의 객체변수(인스턴스변수)들에 각각 저장
+		MyDate d3 = new MyDate(1988);
+		d3.print();
+
+		/*
+				출력 결과
+
+				1988/1/1
+		*/		
+
+		// 4. 기본생성자 호출
+
+		MyDate d4 = new MyDate();
+		d4.print();
+
+		/*
+				출력 결과
+
+				2016/1/1
+		*/		
+
+
+
+
+/********************************************************************************************************
+*												결 		론												*
+*																										*
+*				MyDate클래스를 이용해 객체(인스턴스)를 생성할 때 											*
+*				어떠한 형태로 생성 하던지(어떠한 생성자를 호출 하던지) 										*
+*				결국 매개변수 4개가 있는 생성자가 호출됨													*
+*																										*
+*												이  		유												*
+*																										*
+*				모든 형태의 생성자들이 내부에 this()메소드로 호출하여 전달한 값이							*
+*																										*
+*				매개변수 3개가 있는 생성자를 다시 호출하기 때문												*
+*																										*
+*********************************************************************************************************/
+	}
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+//Test67.java
+
+/*
+	메소드 오버로딩?
+
+	오버로딩: - 이미 존재하는 이름이 동일한 것을 다시 재정의 한다는 의미
+
+	메소드 오버로딩: - 동일한 이름의 메소드를 클래스 내부에 여러번 정의하는 것
+
+	
+	Q. 동일한 이름의 메소드를 여러번 정의(메소드 오버로딩) 가능한 이유
+
+	A. - 동일한 이름의 메소드가 호출되더라도 전달 인자의 자료형이나 개수로 해당 메소드를 구분해서 호출할 수 있기 때문
+
+	
+	※메소드 오버로딩 규칙
+
+	-> 동일한 이름의 메소드 일지라도
+		
+		1. 메소드의 전달인자의 자료형
+		2. 메소드의 전달인자 개수
+								등이 달라야함
+
+
+
+*/
+
+public class Test67{
+	public static void main(String[] args){
+		//오버로딩된 메소드들 호출 해보기
+
+		System.out.println(true);   //boolean  			논리값 출력
+		System.out.println('A');	//char	   			문자 출력
+		System.out.println(128);	//int				정수 출력
+		System.out.println(3.5);	//double || float	실수 출력
+		System.out.println("Hello");//String 			문자열 출력
+
+		// println() <<-- [출력하는 기능] 메소드 
+
+		/*
+				결론
+				 - 화면 출력을 위한 메소드는 println()하나이지만
+				 	메소드가 여러 출력 동작을 하고 있음
+				 	(논리값, 문자, 정수, 실수, 문자열 등 여러 출력을 함)
+		*/
+
+		// println()메소드가 여러 출력을 할 수 있는 이유
+
+		// -> 메소드 호출시 전달받는 인자의 자료형을 달리하여 메소드를 여러번 정의 해놓았기 때문
+
+
+		// 자바API Document 문서(http://docs.oracle.com/javase/7/docs/api)에서
+		// java.io.PrintStream.println 메소드 찾기..
+		//println()
+		//println(boolean x)
+		//println(char x)
+		//....
+		//println(int x)
+		//등등 메소드들이 PrintStream 클래스 내부에 메소드 오버로딩 되어 있음
+
+		//--------------------------------------------------------------------------------------------------------
+		// 쉬어가기
+
+
+	//	System.out.println() 해석
+
+	//	1. java.lang패키지는 자바에서 기본적으로 제공되는 패키지 이기때문에
+	// 		자동으로 사용가능하게 import(추가)
+	// 		정확히 자바 컴파일러가 import문을 추가해줌
+
+	// 	2.	System클래스는 java.lang패키지에 속해 있는 클래스 임
+	//		따라서 import 문을 작성 하지 않고 바로 사용할수 있음
+	
+	/*
+		import java.lang.*;
+	*/
+
+	// 	3. 	java.lang.System클래스 내부에 존재하는 PrintStream클래스타입의 out이라는 참조변수가 static구문으로 선언되어 있음
+	//		이 out참조변수 내부에는 PrintStream객체의 주소가 저장되어 있음
+	//		그러므로 PrintStream객체가 가지고 있는 println()메소드를 호출하여 사용하는 것
+
+	/*
+		Date 클래스를 현재 Test67.java 내부에서 사용하기 위해
+
+		import java.util.Date 구문을(제일 위) 작성해 놓아야함
+	*/
+	}
+}
+
+---------------------------------------------------------------------------------------------
+
+// Test68.java
+
+
+/*
+	자바의 특징 중 하나인 다형성
+
+	 - 다양한 형태의 성질을 지닐 수 있음
+
+	생성자 오버로딩 - 하나의 생성자 이름으로 여러개의 생성자를 만들어 놓을 수 있음
+
+	메소드 오버로딩 - 하나의 이름으로 다양한 형태의 메소드를 만들어 놓을수 있음
+
+	==> 생성자 오버로딩, 메소드 오버로딩::> 다형성 특징을 가지고 있음
+	
+*/
+
+
+
+/*	
+	System.out.println()메소드 호출 부분 직접 만들어 보기
+
+	System1클래스 만들기
+
+	PrintStream1클래스 만들기
+
+*/
+
+class System1{
+
+		static PrintStream1 out = new PrintStream1();		// JVM에서 먼저 메모리(메소드영역)에 올라가 있음 (객체에 올라가기 전) 
+	}
+
+class PrintStream1{
+
+//한줄 띄우는 기능의 println메소드 오버로딩
+
+	void println(){
+		System.out.println();
+	}
+
+	//논리 값을 매개변수로 전달받아 출력하는 기능의 println메소드 오버로딩
+
+	void println(boolean x){
+		System.out.println(x); //기능
+	}
+	
+	//정수값을 매개변수로 전달 받아 출력하는 기능의 println메소드 오버로딩
+
+		void println(int x){
+			System.out.println(x); //기능
+		}
+
+	//실수값을 매개변수로 전달 받아 출력하는 기능의 println메소드 오버로딩
+
+	void println(double x){
+		System.out.println(x); //기능
+	}
+
+	//문자열을 매개변수로 전달 받아 출력하는 기능의 println메소드 오버로딩
+
+	void println(String x){
+		System.out.println(x); // 기능
+	}
+}// PrintStream1 클래스 끝
+
+public class Test68 {
+	public static void main(String[] args) {
+		System1.out.println();				//한줄 띄우기
+		System1.out.println(2);				//정수 값을 전달하면 출력후 한줄 띄우기
+		System1.out.println(1.2);			//실수 값을 전달하면 출력후 한줄 띄우기
+		System1.out.println("만든 문자열");	//문자열을 전달하면 출력후 한줄 띄우기
+	}
+
+}
+
+
+------------------------------------------------------------------------------------------------------------------
