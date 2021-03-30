@@ -1,0 +1,17 @@
+<2장 연습문제 풀이>
+1.
+[방법1] between
+SQL> select last_name, hire_date
+     from employees
+     where hire_date between '01-JAN-04' and '31-DEC-04';
+
+[방법2] like
+SQL> select last_name, hire_date
+     from employees
+     where hire_date like '%04';
+
+2. 
+SQL> select last_name, salary, commission_pct
+     from employees
+     where commission_pct is null
+     order by salary desc;

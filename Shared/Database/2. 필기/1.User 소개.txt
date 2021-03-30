@@ -1,0 +1,24 @@
+<Linux User>
+- root(pw : oracle01) - 관리자의 권한을 가진 계정
+- oracle(pw: oracle) - /home/oracle 디렉토리 권한
+                              /u01/app/oracle 디렉토리 권한
+
+<Oracle User>
+- sys(pw: oracle) - sysdba 권한(dba + DB생성 + DB시작/종료)
+  SQL> conn sys/oracle as sysdba
+
+- system(pw: oracle) - dba 권한
+  SQL> conn system/oracle
+
+- hr(pw: hr) - Object(Table, View, Index 등)를 운영할 수 있는 권한
+  SQL> conn hr/hr
+
+<DB 시작 및 사용자 접속>
+1. ORCL 가상PC 시작
+2. Linux 로그인 - username : oracle / password : oracle
+3. 터미널 창 열기
+4. 리스너 활성화                  $] lsnrctl start
+5. sqlplus  프로그램 실행      $] sqlplus /nolog
+6. sys 사용자로 DB 로그인 SQL> conn sys/oracle as sysdba
+7. DB 시작	        SQL> startup
+8. hr 사용자로 DB 로그인  SQL> conn hr/hr
