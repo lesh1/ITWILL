@@ -397,9 +397,9 @@ class Student{
 		
 	}
 	
-	public void add(int number) {
-		num+=number;
-		staticNum+=number;
+	public void add(int add{
+		num+=add;
+		staticNum+=add;
 	}
 }
 ```
