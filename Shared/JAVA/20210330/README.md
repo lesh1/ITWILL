@@ -98,3 +98,98 @@ import java.*;
   자바 컴파일러가 자동으로 해결해 주고 있음
 
 ```
+### import 문은 반드시 클래스 선언 전에 나와야함
+### 소스의 앞 부분에 선언되어야 함
+
+# Test69.java
+
+```
+public class Test69 {
+	public static void main(String[] args) {
+
+	// 다른 패키지에 있는 클래스 사용하기 위해
+	// 패키지명을 포함하는 클래스 경로명을 사용해야 한다.
+	java.util.Scanner scanner = new java.util.Scanner(System.in);
+	// System 클래스는 java.lang 패키지에 속해있으므로 생략
+	// System클래스의 in 상수 내부에 new InputStream();객체가 저장되어 있다
+	// -> 채팅시 데이터를 입력하면
+	// 바이트 단위로 데이터를 읽어 들이기 위한 스트림 통로 역할을 한다
+		
+//	java.util.ArrayList arrayList1; 가능
+//	ArrayList arrayList2; 불가능 
+	}
+}
+
+```
+```
+
+//2. 
+	import java.util.Scanner;
+public class Test69 {
+	public static void main(String[] args) {
+
+	// import문 
+
+	// 다른 패키지에 있는 클래스 사용할때 그 클래스의 경로명을 선언하여
+	// 자바 컴파일러에게 알려주는 구문
+	// 문법 ) import 패키지명.클래스명;
+	// 주의할점) 항상 클래스 밖 맨 위쪽에 import 구문을 작성해 놓아야함
+
+	//2.
+	Scanner scanner2= new Scanner(System.in);
+	System.out.println(scanner2.next());
+	
+	}
+}
+
+```
+```
+//3.
+
+import java.util.*
+
+public class Test69 {
+	public static void main(String[] args) {
+
+	// import문 
+
+	// 3. java.util패키지 내부에 있는 Scanner클래스 뿐만 아니라
+	// 모든 클래스들을 사용 가능하게 하려면...
+	// 문법) import 패키지명.*;
+
+	//3.
+
+	// System.in <- System클래스의 in 상수에 InputStream객체 얻기
+	// new Scanner(System.in) <- InputStream객체를 지니고 있는 Scanner객체 생성
+
+	Scanner scanner3= new Scanner(System.in);
+
+	// scanner3.next()
+	// InputStream객체(입력한 데이터를 바이트 단위로 읽어 들일 통로)
+	// 를 이용해 읽어 들인 데이터들을 문자열로 변환해서 얻기 위해
+	// Scanner객체의 next()메소드를 호출하여 문자열로 변환후 변환 받아 출력
+
+	System.out.println(scanner3.next());
+	
+	}
+}
+
+```
+
+### InputStream 객체의 역할
+
+
+```
+InputStream  : 1바이트 단위로 데이터를 읽어 들이기 위한 통로
+
+outputStream : 읽어들인 데이터를 바깥으로 내보내기 위한 통로
+
+Scanner : 1바이트 단위로 데이터를 읽어 들인 값을 정수나 실수값으로 받아들이기 위한 역할
+
+```
+### Scanner 
+
+```
+scanner.next() : 문자열로 값을 받아들임
+
+```
