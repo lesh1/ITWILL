@@ -1,0 +1,9 @@
+select emp_id, name, sal
+from emp;
+
+emp_id | name | sal
+------------------------
+100	 King	$24,000
+
+select emp_id, name, 12*to_numbar(sal, '$999,999') as annsal
+from emp;

@@ -3,9 +3,10 @@
 	 2) 문자 조작함수 : concat, substr, length, instr,
 			 lpad, rpad, replace, trim
 2.숫자함수 : round, trunc, mod
-3.날짜함수
-4.변환함수
-5.일반함수
+3.날짜함수 : sysdate, months_between, add_months, next_day,
+           last_day, round, trunc
+4.변환함수 : to_char, to_date, to_number
+5.일반함수 : nvl, nvl2, nullif, coalesce
 ---------------------------------------------------------
 <<문자 조작 함수>>
 1. concat(expr1, expr2)
