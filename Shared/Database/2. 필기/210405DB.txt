@@ -1,0 +1,104 @@
+210405DB
+
+그룹함수
+
+AVG(숫자형)
+
+COUNT(행의 수)
+
+MAX (모든타입)
+
+MIN(모든타입)
+
+SUM(숫자형)
+
+
+------------------------------------------------
+
+
+COUNT 함수
+
+count(*) --> null 포함
+
+count(expr)--> null 생략 , 중복값 포함
+
+count(distinct expr) --> null생략, 중복값 제거
+
+(ex1) select count(*) from employees where department_id=80;  || 80번 부서의 소속된 사원의 수
+
+(ex2) select count(commission_pct) from employees where department_id=80; || 80번 부서에 소속된 사원 중 커미션을 받는 사람의 수
+
+(ex3) select count(distinct department_id) from employees; || 사원들이 소속된 부서의 수 구하기
+
+
+
+---------------------------------------------------
+
+
+(Quiz) employees 테이블로부터 전체 사원의 커미션 평균을 구하는 쿼리구문을 작성하시오
+
+
+1. select avg(commission_pct) as avg_comm from employees;  || 커미션을 받는 사원들의 커미션 평균
+
+[결과] 	avg_comm
+		----------
+		()
+
+정답1. select avg(nvl(commission_pct,0)) as avg_comm from employees; || 전체 함수의 커미션 평균
+
+정답2. select (sum(commission_pct)/count(*)) as avg_comm from employees; 
+
+
+----------------------------------------------------
+
+Group by 절
+
+select절에서 동시에 표시하려면 그룹함수의 포함되어있지 않은 컬럼은 group by절에 포함되어 있어야함
+
+select department_id, avg(salary) from employees group by department_id; 	
+
+
+-----------------------------------------------------
+
+조건절 (where , having)
+
+where : 행 제한 조건문
+
+having : 행 그룹 제한 조건문
+
+4번 연습문제 
+
+1
+
+select job_id, max(salary) as Maximum, min(salary) as Minimum, sum(salary) as Sum, avg(salary) as Average 
+from employees group by job_id;
+
+2 
+select manager_id, min(salary) from employees where manager_id is not null 
+having min(salary) >=6000 group by manager_id order by min(salary) desc;
+
+------------------------------------------------
+
+join
+
+select e.employee_id, e.last_name, e.salary, e.department_id, 
+d.department_name from employees e join 
+departments d on e.department_id = d.department_id;
+
+
+ON 절을 사용한 self-join
+
+select worker.last_name emp, manager.last_name mgr 
+from employeees worker join employees manager
+on (worker.manager_id= manager.employee_id);
+
+---------------------------------------------
+
+문제 5
+
+select e.employee_id, e.last_name, e.salary, d.department_id, d.department_name from employees e join departments d
+on e.department_id = d.department_id;
+
+
+select e.last_name, e.employee_id, m.last_name, m.manager_id from employees e join employees m 
+on (e.employee_id = m.manager_id);
