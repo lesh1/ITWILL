@@ -561,9 +561,9 @@ public class Test93 {
 	public static void main(String[] args) {
 		TV tv = new TV();
 		CaptionTV c = new CaptionTV();
-		TV t1= new CaptionTV();
-		// t1 = new CaptionTV();
-		// t1 = new CaptionTV();
+		TV t1= new CaptionTV(); // 업캐스팅(다형성 특징)
+		// t1 = new CaptionTV(); // 업캐스팅(다형성 특징)
+		// t1 = new CaptionTV(); // 업캐스팅(다형성 특징)
 	}
 
 }
