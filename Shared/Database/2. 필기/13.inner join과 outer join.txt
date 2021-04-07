@@ -1,0 +1,8 @@
+inner join  vs  outer join
+-내부조인		-외부조인
+-조인조건을 만족하는	-조인조건을 만족하지 않는 
+ 행만 반환하는 	 행까지 반환하는
+ 조인유형		 조인유형
+-on절 join	-left outer join
+		 right outer join
+		 full outer join
