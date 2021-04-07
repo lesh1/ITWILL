@@ -100,5 +100,5 @@ select e.employee_id, e.last_name, e.salary, d.department_id, d.department_name 
 on e.department_id = d.department_id;
 
 
-select e.last_name, e.employee_id, m.last_name, m.manager_id from employees e join employees m 
+select e.last_name, e.employee_id, m.last_name, e.manager_id from employees e join employees m 
 on (e.employee_id = m.manager_id);
