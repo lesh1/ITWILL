@@ -1,0 +1,167 @@
+select e.employee_id, e.last_name, e.salary, d.department_id, d.department_name from employees e join departments d
+on e.department_id = d.department_id;
+
+
+select d.department_id, d.department_name, l.city
+from departments d join locations l
+on d.location_id = l.location_id
+order by d.department_id;
+
+
+N개의 테이블 연결(Join)
+
+select e.employee_id, e.last_name, d.department_name, l.city
+from employees e join departments d
+on e.department_id = d.department_id
+join locations l 
+on d.location_id = l.location_id
+order by e.employee_id;
+
+select e.last_name, e.employee_id, m.last_name, m.manager_id from employees e join employees m 
+on (e.employee_id = m.manager_id);
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+	inner join (내부조인)
+
+ - 조인조건을 만족하는 행만 반환하는 조인유형
+
+ - on절 join
+
+	outer join (외부조인)
+
+ - 조인조건을 만족하지 않는 행까지 반환하는 조인 유형
+
+ - left outer join
+
+select e.employee_id, e.last_name, d.department_name, l.city
+from employees e left outer join departments d
+on e.department_id = d.department_id
+join locations l 
+on d.location_id = l.location_id
+order by e.employee_id;
+
+employees 의 null 값을 가져옴
+
+ - right outer join
+
+ select e.employee_id, e.last_name, d.department_name, l.city
+from employees e right outer join departments d
+on e.department_id = d.department_id
+join locations l 
+on d.location_id = l.location_id
+order by e.employee_id;
+
+departments 의 null 값을 가져옴
+
+ - full outer join
+
+ select e.employee_id, e.last_name, d.department_name, l.city
+from employees e full outer join departments d
+on e.department_id = d.department_id
+join locations l 
+on d.location_id = l.location_id
+order by e.employee_id;
+
+양쪽의 null 값을 가져옴
+ 
+ left outer join / right outer join (테이블의 순서(왼쪽 join 오른쪽)에 따라 달라짐) / full outer join (테이블에 null 값 전체를 가져옴)
+
+
+
+---------------------------------------------
+
+
+sub query
+
+select last_name , salary
+from employees
+where salary > (select salary from employees where last_name = 'Abel');
+
+main query = outer query
+
+
+sub query => 오른쪽에서 사용 {종종 where 절에 많이 쓰임}
+
+sub query ==> select , from, where, having, order by 절에서 사용 가능 [group by를 제외한 모든 절에서 사용가능]
+
+
+
+select last_name, job_id, salary from employees where salary= (select min(salary) from employees);
+
+having 절에 sub query가 쓰인 경우
+
+
+select department_id, min(salary) from employees group by department_id
+having min(salary) > (select min(salary) from employees where department_id=50);
+
+
+from 절에 sub query가 쓰인 경우 (Inline View)
+
+select a.last_name, a.salary, a.department_id, b.salavg
+from employees a join (select department_id avg(salary) salavg from employees group by department_id) b
+on a.department_id = b.department_id
+where a.salary> b.salavg;
+
+
+
+employees 테이블로부터 평균 이상의 급여를 받는 모든 사원의 employee_id, last_name, salary를 
+출력하되 salary를 기준으로 오름차순 정렬하여 출력
+
+select employee_id, last_name, salary 
+from employees
+where salary>=(select avg(salary) from employees)
+order by salary desc;
+
+-----------------------------------------------------------
+
+DML (데이터 조작어)
+
+ - 테이블에 새로운 행 추가(insert)
+
+ 테이블 구조를 알때
+
+ insert into departments values(280,'Oracle',200,1700);
+
+ 테이블 구조를 모를때
+
+ insert into departments (department_name, location_id, manager_id, department_id) values('Java',1700,201,290);
+
+
+null값 자동
+
+ insert into departments (department_name, location_id) values('Jsp',300);
+
+
+null값 명시적
+
+ insert into departments values(310,'Web',null,null); 
+
+
+값 복사하기
+
+insert into copy_emp select * from employees;
+
+
+테이블의 구조만 가져가기
+
+create table copy_emp as(select * from employees where 1=2);
+-----------------------------------------------------------
+
+
+ - 테이블의 기존 행 수정 (update)
+
+update set 
+
+
+ - 테이블의 기존 행 삭제 (delete)
+
+delete from
+
+----------------------------------------------------------
+		
+		트랜젝션 제어
+	
+commit :  저장
+
+rollback : 취소
